@@ -5,7 +5,7 @@ exports.getAllUsers = async (req, res) => {
     const users = await UserModel.find();
     const total = users.length;
     res.status(200).json({
-      message: total > 0 ? "Success" : "No user found",
+      message: total > 0 ? "Users found" : "No user found",
       total,
       data: users,
     });
