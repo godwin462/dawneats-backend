@@ -2,7 +2,12 @@ const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
   {
-    fullname: {
+    firstName: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    lastName: {
       type: String,
       trim: true,
       required: true,
@@ -16,8 +21,11 @@ const userSchema = new mongoose.Schema(
     phone: {
       type: String,
       trim: true,
-      required: true,
-      unique: true,
+      validate: {
+        validator: (v) => /\d{3}-\d{3}-\d{4}/.test(v),
+        message: (props) => `${props.value} is not a valid phone number!`,
+      },
+      required: [true, "User phone number required"],
     },
     profileImage: {
       imageId: {
