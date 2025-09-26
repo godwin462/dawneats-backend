@@ -15,6 +15,27 @@ app.use(cors());
 
 app.use(`${apiVersion}/users`, userRouter);
 
+app.use((err, req, res, next) => {
+  if (err) return res.status(500).json({ message: err.message });
+  next();
+});
+
+app.get("/api/v1/", (req, res) => {
+  try {
+    const token = req.headers.authorization.split(" ")[1];
+
+    const { id } = jwt.verify(token, "permiscus", async (err, decoded) => {
+      if (err) return res.status(500).json({ message: err.message });
+      const checkUser = await userModel.findById(id);
+      res.status(200).json({
+        message: `Welcome ${checkUser.name}, we are happy to have you here!`,
+      });
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 app.get(`/`, (req, res) => {
   res.send(`Hello World!`);
 });
