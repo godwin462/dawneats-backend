@@ -1,5 +1,5 @@
 {
-  "name": "dawnbite-backend",
+  "name": "dawneats-backend",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/godwin462/dawnbite-backend.git"
+    "url": "git+https://github.com/godwin462/dawneats-backend.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/godwin462/dawnbite-backend/issues"
+    "url": "https://github.com/godwin462/dawneats-backend/issues"
   },
-  "homepage": "https://github.com/godwin462/dawnbite-backend#readme",
+  "homepage": "https://github.com/godwin462/dawneats-backend#readme",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^17.2.2",
