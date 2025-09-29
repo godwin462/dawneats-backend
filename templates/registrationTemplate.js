@@ -1,4 +1,4 @@
-const registrationOtpTeplate = (otp) => {
+const registrationTeplate = (otp) => {
   return `
     <!DOCTYPE html>
 <html lang="en">
@@ -46,10 +46,8 @@ const registrationOtpTeplate = (otp) => {
         </tr>
     </table>
 </body>
-
 </html>
-
     `;
 };
 
-module.exports = registrationOtpTeplate;
+module.exports = registrationTeplate;
