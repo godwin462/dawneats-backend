@@ -5,10 +5,11 @@ const {
   verifyLogin,
   verifyRegistration,
 } = require("../controller/authController");
+const {verifyOtp} = require("../middlewares/verifyOtpMiddleware");
 
 authRouter.post("/signup", register);
-authRouter.post("/verify-signup/:userId", verifyRegistration);
+authRouter.put("/verify-signup/:userId", verifyOtp, verifyRegistration);
 authRouter.post("/signin", login);
-authRouter.post("/verify-signin/:userId", verifyLogin);
+authRouter.put("/verify-signin/:userId", verifyOtp, verifyLogin);
 
 module.exports = authRouter;

@@ -3,7 +3,6 @@ const registrationTeplate = require("../templates/registrationTemplate");
 const otpGenerator = require("otp-generator");
 const { sendEmail } = require("../email/modemailer");
 const loginOtpTemplate = require("../templates/loginOtpTemplate");
-const { verifyOtp } = require("../utils/otpUtil");
 const jwt = require("jsonwebtoken");
 const OtpModel = require("../models/OtpModel");
 
@@ -84,18 +83,14 @@ exports.verifyRegistration = async (req, res) => {
       return res.status(400).json({ message: "User already verified" });
     }
 
-    const { status, message } = await verifyOtp(userId, otp);
-    if (!status) {
-      return res.status(400).json({ message });
-    }
-
     token = jwt.sign({ id: userId }, "permiscus", { expiresIn: `${otpLifeTime}m` });
 
     user.isVerified = true;
+    user.token = token;
     await user.save();
     res
       .status(200)
-      .json({ message: "User signin successful", data: user, token });
+      .json({ message: "User signin successful", data: user});
   } catch (error) {
     console.log(error);
     res
@@ -159,17 +154,13 @@ exports.verifyLogin = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const otpVerification = await verifyOtp(userId, otp);
-
-    if (!otpVerification.status) {
-      // console.log("we get issue here ooo", otpVerification);
-      return res.status(400).json({ message: otpVerification.message });
-    }
-
     const token = jwt.sign({ id: user._id }, "permiscus", { expiresIn: `${otpLifeTime}m` });
+
+    user.token = token;
+    await user.save();
     res
       .status(200)
-      .json({ message: "User verified successfully", data: user, token });
+      .json({ message: "User verified successfully", data: user });
     // next();
   } catch (error) {
     console.log(error);
