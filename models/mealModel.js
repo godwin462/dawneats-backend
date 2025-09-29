@@ -1,4 +1,4 @@
-const { Schema } = require("mongoose");
+const { Schema, default: mongoose } = require("mongoose");
 
 const mealSchema = Schema(
   {
@@ -31,3 +31,6 @@ const mealSchema = Schema(
   },
   { timestamps: true }
 );
+
+const mealModel = mongoose.model('meals', mealSchema)
+module.exports = mealModel;
