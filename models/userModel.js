@@ -5,26 +5,27 @@ const userSchema = new mongoose.Schema(
     firstName: {
       type: String,
       trim: true,
-      required: true,
+      required: [true, "User first name required!"],
     },
     lastName: {
       type: String,
       trim: true,
-      required: true,
+      required: [true, "User last name required!"],
     },
     email: {
       type: String,
       trim: true,
-      required: true,
-      unique: true,
+      required: [true, "User email required!"],
+      unique: [true, "User email already exists!"],
     },
     phone: {
       type: String,
       trim: true,
-      validate: {
-        validator: (v) => /\d{3}-\d{3}-\d{4}/.test(v),
-        message: (props) => `${props.value} is not a valid phone number!`,
-      },
+      // validate: {
+      //   validator: (v) =>
+      //     /^[+]{1}(?:[0-9\-\\(\\)\\/.]\s?){6,15}[0-9]{1}$/.test(v),
+      //   message: (props) => `${props.value} is not a valid phone number!`,
+      // },
       required: [true, "User phone number required"],
     },
     profileImage: {
@@ -37,7 +38,7 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true,
+      required: [true, `Provide password!`],
     },
   },
   {

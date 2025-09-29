@@ -1,4 +1,4 @@
-const loginOtpTemplate = () => {
+const loginOtpTemplate = (otp) => {
   return `<!DOCTYPE html>
 <html lang="en">
 
@@ -14,7 +14,7 @@ const loginOtpTemplate = () => {
         <!-- Logo -->
         <tr>
             <td align="center" style="padding-bottom: 20px;">
-                <img src="https://via.placeholder.com/120x60.png?text=DawnEats" alt="DawnEats Logo"
+                <img src="https://res.cloudinary.com/ddv0ffqnj/image/upload/v1759131838/Modern_Fast_Delivery_Logo_1_nfaoht.svg" alt="DawnEats Logo"
                     style="max-width: 120px;">
             </td>
         </tr>
@@ -37,7 +37,7 @@ const loginOtpTemplate = () => {
                 <div
                     style="background-color: #fff3e6; border: 1px solid #FF6E00; border-radius: 6px; display: inline-block; padding: 15px 25px; margin: 10px 0;">
                     <p style="margin: 0; font-size: 20px; font-weight: bold; color: #FF6E00;">
-                        {{ otp }}
+                        ${otp}
                     </p>
                 </div>
             </td>
