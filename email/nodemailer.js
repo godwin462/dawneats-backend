@@ -20,7 +20,7 @@ const sendEmail = async (options) => {
     html: options.html, // HTML body
   });
 
-    console.log("Message sent:", info.messageId);
+    // console.log("Message sent:", info.messageId);
 };
 
 module.exports = {transporter, sendEmail};
