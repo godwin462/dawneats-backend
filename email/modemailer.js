@@ -1,17 +1,17 @@
 const nodemailer = require("nodemailer");
 
-// Create a test account or replace with real credentials.
 const transporter = nodemailer.createTransport({
   service: "gmail",
-  port: 587,
-  secure: false, // true for 465, false for other ports
+  // port: 587,
+  // secure: false,
   auth: {
     user: process.env.EMAIL,
     pass: process.env.MAIL_PASS,
   },
+  // connectionTimeout: 5 * 60 * 1000,
 });
 
-exports.sendEmail = async (options) => {
+const sendEmail = async (options) => {
   const info = await transporter.sendMail({
     from: process.env.EMAIL,
     to: options.email,
@@ -20,5 +20,7 @@ exports.sendEmail = async (options) => {
     html: options.html, // HTML body
   });
 
-  //   console.log("Message sent:", info.messageId);
+    console.log("Message sent:", info.messageId);
 };
+
+module.exports = {transporter, sendEmail};

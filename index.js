@@ -4,6 +4,8 @@ const app = express();
 const cors = require("cors");
 const { default: mongoose } = require("mongoose");
 const userRouter = require("./routers/userRouter");
+const authRouter = require("./routers/authRouter");
+const { transporter } = require("./email/modemailer");
 const apiVersion = "/api/v1";
 
 const dbUri = process.env.DB_URI;
@@ -42,14 +44,28 @@ app.get(`/`, (req, res) => {
 app.get(`${apiVersion}/`, (req, res) => {
   res.send(`API version ${apiVersion} is running`);
 });
+app.use(`${apiVersion}/auth`, authRouter);
 
 mongoose
   .connect(dbUri)
   .then(() => {
     console.log("Connected to MongoDB");
-    app.listen(port, () => {
-      console.log(`Server is running on http://${host}:${port}${apiVersion}`);
-    });
+    transporter
+      .verify()
+      .then(() => {
+        console.log("Email server is ready to take our messages");
+        app.listen(port, () => {
+          console.log(
+            `Server is running on http://${host}:${port}${apiVersion}`
+          );
+        });
+      })
+      .catch((error) => {
+        console.log("Error connecting to email server:", error);
+      });
+    // app.listen(port, () => {
+    //   console.log(`Server is running on http://${host}:${port}${apiVersion}`);
+    // });
   })
   .catch((error) => {
     console.error("Error connecting to MongoDB:", error);
