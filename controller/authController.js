@@ -1,7 +1,7 @@
 const UserModel = require("../models/userModel");
 const registrationTeplate = require("../templates/registrationTemplate");
 const otpGenerator = require("otp-generator");
-const { sendEmail } = require("../email/modemailer");
+const { sendEmail } = require("../email/nodemailer");
 const loginOtpTemplate = require("../templates/loginOtpTemplate");
 const jwt = require("jsonwebtoken");
 const OtpModel = require("../models/OtpModel");

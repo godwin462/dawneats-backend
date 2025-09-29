@@ -5,7 +5,7 @@ const cors = require("cors");
 const { default: mongoose } = require("mongoose");
 const userRouter = require("./routers/userRouter");
 const authRouter = require("./routers/authRouter");
-const { transporter } = require("./email/modemailer");
+const { transporter } = require("./email/nodemailer");
 const apiVersion = "/api/v1";
 
 const dbUri = process.env.DB_URI;
