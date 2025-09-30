@@ -3,8 +3,10 @@ const NodemailerHelper = require("nodemailer-otp");
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
-  port: 587,
+  // port: 587,
   // secure: false,
+  // host: "smtp.gmail.com",
+  port: 2525,
   auth: {
     user: process.env.EMAIL,
     pass: process.env.MAIL_PASS,
