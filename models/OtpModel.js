@@ -27,6 +27,10 @@ const authSchema = new Schema(
       // },
       max: 3,
     },
+    blockedUntil: {
+      type: Date,
+      default: null,
+    },
   },
   { timestamps: true }
 );

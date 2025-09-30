@@ -1,8 +1,9 @@
 const nodemailer = require("nodemailer");
+const NodemailerHelper = require("nodemailer-otp");
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
-  // port: 587,
+  port: 587,
   // secure: false,
   auth: {
     user: process.env.EMAIL,
@@ -20,7 +21,11 @@ const sendEmail = async (options) => {
     html: options.html, // HTML body
   });
 
-    // console.log("Message sent:", info.messageId);
+  // console.log("Message sent:", info.messageId);
 };
+const nodemailerOtpHelper = new NodemailerHelper(
+  process.env.EMAIL,
+  process.env.MAIL_PASS
+);
 
-module.exports = {transporter, sendEmail};
+module.exports = { transporter, sendEmail, nodemailerOtpHelper };

@@ -2,14 +2,12 @@ const authRouter = require("express").Router();
 const {
   register,
   login,
-  verifyLogin,
-  verifyRegistration,
+  verifyAuth,
 } = require("../controller/authController");
-const {verifyOtp} = require("../middlewares/verifyOtpMiddleware");
+const { verifyOtp } = require("../middlewares/verifyOtpMiddleware");
 
 authRouter.post("/signup", register);
-authRouter.put("/verify-signup/:userId", verifyOtp, verifyRegistration);
 authRouter.post("/signin", login);
-authRouter.put("/verify-signin/:userId", verifyOtp, verifyLogin);
+authRouter.put("/verify-otp/:userId", verifyOtp, verifyAuth);
 
 module.exports = authRouter;
