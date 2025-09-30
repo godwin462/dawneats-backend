@@ -1,9 +1,11 @@
 const UserModel = require("../models/userModel");
 const registrationTeplate = require("../templates/registrationTemplate");
-const { sendEmail, nodemailerOtpHelper } = require("../email/nodemailer");
+const { nodemailerOtpHelper } = require("../email/nodemailer");
+
 const loginOtpTemplate = require("../templates/loginOtpTemplate");
 const jwt = require("jsonwebtoken");
 const OtpModel = require("../models/OtpModel");
+const {sendEmail} = require("../email/mailtrap");
 
 const validateEmail = (email) => {
   const emailRegex =
