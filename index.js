@@ -4,6 +4,7 @@ const app = express();
 const cors = require("cors");
 const { default: mongoose } = require("mongoose");
 const userRouter = require("./routers/userRouter");
+const orderRouter = require("./routers/orderRouter");
 const apiVersion = "/api/v1";
 
 const dbUri = process.env.DB_URI;
@@ -13,6 +14,7 @@ const port = process.env.PORT || 8080;
 app.use(express.json());
 app.use(cors());
 
+app.use(`${apiVersion}/orders`, orderRouter);
 app.use(`${apiVersion}/users`, userRouter);
 
 app.get(`/`, (req, res) => {
