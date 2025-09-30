@@ -16,31 +16,34 @@ app.use(express.json());
 app.use(cors());
 
 app.use(`${apiVersion}/users`, userRouter);
-
 app.use((err, req, res, next) => {
-  if (err) return res.status(500).json({ message: err.message });
+  if (err)
+    return res
+      .status(500)
+      .json({ message: "Global Server Error", error: err.message });
   next();
 });
-
 app.get("/api/v1/", (req, res) => {
   try {
-    const token = req.headers.authorization.split(" ")[1];
+    // const token = req.headers.authorization.split(" ")[1];
 
-    const { id } = jwt.verify(token, "permiscus", async (err, decoded) => {
-      if (err) return res.status(500).json({ message: err.message });
-      const checkUser = await userModel.findById(id);
-      res.status(200).json({
-        message: `Welcome ${checkUser.name}, we are happy to have you here!`,
-      });
-    });
+    // const { id } = jwt.verify(token, "permiscus", async (err, decoded) => {
+    //   if (err) return res.status(500).json({ message: err.message });
+    //   const checkUser = await userModel.findById(id);
+    //   res.status(200).json({
+    //     message: `Welcome ${checkUser.name}, we are happy to have you here!`,
+    //   });
+    // });
+
+    res.status(200).json({ message: "Welcome to DawnEats API version 1" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
-
 app.get(`/`, (req, res) => {
   res.send(`Hello World!`);
 });
+
 app.get(`${apiVersion}/`, (req, res) => {
   res.send(`API version ${apiVersion} is running`);
 });
@@ -61,12 +64,12 @@ mongoose
         });
       })
       .catch((error) => {
-        console.log("Error connecting to email server:", error);
+        console.log("Error connecting to email server:", error.message);
       });
     // app.listen(port, () => {
     //   console.log(`Server is running on http://${host}:${port}${apiVersion}`);
     // });
   })
   .catch((error) => {
-    console.error("Error connecting to MongoDB:", error);
+    console.error("Error connecting to MongoDB:", error.message);
   });

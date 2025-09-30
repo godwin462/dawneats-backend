@@ -1,7 +1,6 @@
 const UserModel = require("../models/userModel");
 const registrationTeplate = require("../templates/registrationTemplate");
-const otpGenerator = require("otp-generator");
-const { sendEmail } = require("../email/nodemailer");
+const { sendEmail, nodemailerOtpHelper } = require("../email/nodemailer");
 const loginOtpTemplate = require("../templates/loginOtpTemplate");
 const jwt = require("jsonwebtoken");
 const OtpModel = require("../models/OtpModel");
@@ -22,7 +21,9 @@ exports.register = async (req, res) => {
     const existingPhone = await UserModel.findOne({ phone });
 
     if (existingEmail || existingPhone) {
-      return res.status(400).json({ message: "User already exists" });
+      return res
+        .status(400)
+        .json({ message: "User with the credentials already exists" });
     }
 
     if (!validateEmail(email)) {
@@ -36,12 +37,7 @@ exports.register = async (req, res) => {
       phone,
     });
 
-    let otp = otpGenerator.generate(4, {
-      digits: true,
-      alphabets: false,
-      upperCase: false,
-      specialChars: false,
-    });
+    let otp = nodemailerOtpHelper.generateOtp(4);
 
     const text = `DawnEats Account verification`;
     const html = registrationTeplate(otp);
@@ -52,8 +48,10 @@ exports.register = async (req, res) => {
       html,
     }); //console.log(otp);
 
-    otp = jwt.sign(otp, "permiscus", { expiresIn: `${otpLifeTime}m` });
-    OtpModel.create({
+    otp = jwt.sign({ otp }, "permiscus", { expiresIn: `${otpLifeTime}m` });
+
+    await OtpModel.deleteMany({ userId: user._id }); // Delete previous OTPs
+    await OtpModel.create({
       userId: user._id,
       otp,
     });
@@ -63,36 +61,6 @@ exports.register = async (req, res) => {
   } catch (error) {
     console.log(error);
     // if (file && file.path) fs.unlinkSync(file.path);
-    res
-      .status(400)
-      .json({ message: "Internal Server Error", error: error.message });
-  }
-};
-
-exports.verifyRegistration = async (req, res) => {
-  try {
-    const { userId } = req.params;
-    const { otp } = req.body;
-
-    const user = await UserModel.findById(userId);
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    if (user.isVerified) {
-      return res.status(400).json({ message: "User already verified" });
-    }
-
-    token = jwt.sign({ id: userId }, "permiscus", { expiresIn: `${otpLifeTime}m` });
-
-    user.isVerified = true;
-    user.token = token;
-    await user.save();
-    res
-      .status(200)
-      .json({ message: "User signin successful", data: user});
-  } catch (error) {
-    console.log(error);
     res
       .status(400)
       .json({ message: "Internal Server Error", error: error.message });
@@ -112,12 +80,8 @@ exports.login = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    let otp = otpGenerator.generate(4, {
-      digits: true,
-      alphabets: false,
-      upperCase: false,
-      specialChars: false,
-    });
+    // Check if the user is blocked from requesting a new OTP
+    let otp = nodemailerOtpHelper.generateOtp(4);
 
     const text = `DawnEats Account verification`;
     const html = loginOtpTemplate(otp);
@@ -127,15 +91,17 @@ exports.login = async (req, res) => {
       text,
       html,
     });
-    console.log(otp);
+
     otp = jwt.sign({ otp }, "permiscus", { expiresIn: `${otpLifeTime}m` });
-    await OtpModel.deleteMany({ userId: user._id });
-    OtpModel.create({
+
+    await OtpModel.deleteMany({ userId: user._id }); // Delete previous OTPs
+    await OtpModel.create({
       userId: user._id,
       otp,
     });
-    console.log(otp);
-    res.status(200).json({ message: "OTP sent successfully" });
+
+    // console.log(otp);
+    res.status(200).json({ message: "OTP sent successfully", data: user });
   } catch (error) {
     console.log(error);
     res
@@ -144,24 +110,26 @@ exports.login = async (req, res) => {
   }
 };
 
-exports.verifyLogin = async (req, res) => {
+exports.verifyAuth = async (req, res) => {
   try {
     const { userId } = req.params;
-    const { otp } = req.body;
 
     const user = await UserModel.findById(userId);
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res
+        .status(404)
+        .json({ message: "User not found, please register" });
     }
 
-    const token = jwt.sign({ id: user._id }, "permiscus", { expiresIn: `${otpLifeTime}m` });
+    token = jwt.sign({ id: userId }, "permiscus", {
+      expiresIn: `1d`,
+    });
 
+    if (!user.isVerified) user.isVerified = true;
     user.token = token;
     await user.save();
-    res
-      .status(200)
-      .json({ message: "User verified successfully", data: user });
-    // next();
+
+    res.status(200).json({ message: "User verified successful", data: user });
   } catch (error) {
     console.log(error);
     res

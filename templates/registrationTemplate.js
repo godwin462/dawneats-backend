@@ -15,7 +15,7 @@ const registrationTeplate = (otp) => {
             <td align="center" style="padding-bottom: 20px;">
                 <!-- Logo -->
                 <img src="https://res.cloudinary.com/ddv0ffqnj/image/upload/v1759131838/Modern_Fast_Delivery_Logo_1_nfaoht.svg" alt="DawnEats Logo"
-                    style="max-width: 120px;">
+                  srcset="https://res.cloudinary.com/ddv0ffqnj/image/upload/v1759131838/Modern_Fast_Delivery_Logo_1_nfaoht.svg 2x"  style="max-width: 120px;">
             </td>
         </tr>
         <tr>
