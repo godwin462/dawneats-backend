@@ -47,6 +47,7 @@ app.get("/api/v1/", (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
 app.get(`/`, (req, res) => {
   res.send(`Hello World!`);
 });
