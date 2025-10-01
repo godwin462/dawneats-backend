@@ -1,8 +1,14 @@
 const multer = require("multer");
+const fs = require("fs");
 
+
+const dir = "./images";
+if (!fs.existsSync(dir)) {
+  fs.mkdirSync(dir);
+}
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "./images");
+    cb(null, dir);
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = `${Date.now()}_${Math.round(Math.random() * 1e9)}`;

@@ -1,18 +1,18 @@
 const nodemailer = require("nodemailer");
 const NodemailerHelper = require("nodemailer-otp");
 
-exports.sendEmail = async (user) => {
-  try {
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      port: 587,
-      secure: false, // true for 465, false for other ports
-      auth: {
-        user: process.env.EMAIL,
-        pass: process.env.MAIL_PASS,
-      },
-    });
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  port: 587,
+  secure: false, // true for 465, false for other ports
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.MAIL_PASS,
+  },
+});
 
+const sendEmail = async (user) => {
+  try {
     const info = await transporter.sendMail({
       from: `DawnEats <${process.env.EMAIL}`,
       to: user.email,
@@ -28,9 +28,9 @@ exports.sendEmail = async (user) => {
   }
 };
 
-exports.nodemailerOtpHelper = new NodemailerHelper(
+const nodemailerOtpHelper = new NodemailerHelper(
   process.env.EMAIL,
   process.env.MAIL_PASS
 );
 
-// module.exports = { transporter, sendEmail, nodemailerOtpHelper };
+module.exports = { transporter, sendEmail, nodemailerOtpHelper };
