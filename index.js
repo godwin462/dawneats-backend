@@ -1,18 +1,24 @@
+const fs = require("fs");
 require("dotenv").config();
-const express = require("express");
-const app = express();
 const cors = require("cors");
-const { default: mongoose } = require("mongoose");
+const express = require("express");
+const mongoose = require("mongoose");
 const userRouter = require("./routers/userRouter");
 const authRouter = require("./routers/authRouter");
-
-const { transporter } = require("./email/nodemailer");
 const mealRouter = require("./routers/mealRouter");
+const { transporter } = require("./email/nodemailer");
+
+const app = express();
 const apiVersion = "/api/v1";
+const dir = "./images";
 
 const dbUri = process.env.DB_URI;
 const host = "localhost";
 const port = process.env.PORT || 8080;
+
+if (!fs.existsSync(dir)) {
+  fs.mkdirSync(dir);
+}
 
 app.use(express.json());
 app.use(cors());

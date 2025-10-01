@@ -13,7 +13,7 @@ exports.verifyOtp = async (req, res, next) => {
     auth = await OtpModel.findOne({ userId });
 
     if (!auth) {
-      return res.status(400).json({ message: "Please request a new OTP" });
+      return res.status(400).json({ message: "invalid OTP, Please request a new OTP" });
     }
 
     const otpIsValid = jwt.verify(auth.otp, "permiscus");

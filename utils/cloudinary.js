@@ -1,5 +1,5 @@
 const cloudinary = require("../config/cloudinary"); // Cloudinary configuration for image uploads
-exports.uplaodCloudinaryImage = async (file) => {
+exports.uploadCloudinaryImage = async (file) => {
   try {
     const { secure_url, public_id } = await cloudinary.uploader.upload(file, {
       folder: "DawnEats",

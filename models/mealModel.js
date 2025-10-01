@@ -1,23 +1,25 @@
-const { Schema, default: mongoose } = require("mongoose");
+const { model, Schema } = require("mongoose");
 
-const mealSchema = Schema(
+const mealSchema = new Schema(
   {
     name: {
       type: String,
       trim: true,
       required: true,
     },
-    restaurant: {
+    restaurantId: {
       type: Schema.Types.ObjectId,
       ref: "Restaurant",
       required: true,
     },
     image: {
-      imageId: {
+      public_id: {
         type: String,
+        required: true,
       },
-      secureUrl: {
+      secure_url: {
         type: String,
+        required: true,
       },
     },
     description: {
@@ -32,5 +34,5 @@ const mealSchema = Schema(
   { timestamps: true }
 );
 
-const mealModel = mongoose.model('meals', mealSchema)
-module.exports = mealModel;
+const MealModel = model("meals", mealSchema);
+module.exports = MealModel;

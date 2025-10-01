@@ -1,7 +1,7 @@
 const { validateEmail } = require("../middlewares/validateEmail");
 const UserModel = require("../models/userModel");
 const {
-  uplaodCloudinaryImage,
+  uploadCloudinaryImage,
   deleteCloudinaryImage,
 } = require("../utils/cloudinary");
 
@@ -60,7 +60,7 @@ exports.updateUser = async (req, res) => {
     }
     let profileImage = null;
     if (image && image.path) {
-      profileImage = await uplaodCloudinaryImage(image.path);
+      profileImage = await uploadCloudinaryImage(image.path);
       fs.unlinkSync(image.path);
     }
     Object.assign(user, { firstName, lastName, phone, profileImage });
