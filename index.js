@@ -6,10 +6,11 @@ const mongoose = require("mongoose");
 const userRouter = require("./routers/userRouter");
 const authRouter = require("./routers/authRouter");
 const mealRouter = require("./routers/mealRouter");
+const orderRouter = require("./routers/orderRouter");
 const { transporter } = require("./email/nodemailer");
 
 const app = express();
-const orderRouter = require("./routers/orderRouter");
+
 const apiVersion = "/api/v1";
 const dir = "./images";
 
@@ -37,6 +38,7 @@ app.get(`${apiVersion}/`, (req, res) => {
 app.use(`${apiVersion}/users`, userRouter);
 app.use(`${apiVersion}/auth`, authRouter);
 app.use(`${apiVersion}/meals`, mealRouter);
+app.use(`${apiVersion}/orders`, orderRouter);
 
 mongoose
   .connect(dbUri)

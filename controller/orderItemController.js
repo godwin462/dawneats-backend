@@ -1,19 +1,6 @@
-exports.createOrder = async (req, res) => {
+exports.createOrderItem = async (req, res) => {
   try {
-    const {
-      userId = undefined,
-      orderItemId = undefined,
-      addressId = undefined,
-      paymentId = undefined,
-      status = undefined,
-      totalItems = undefined,
-      totalCost = undefined,
-      subTotalCost = undefined,
-      deliveryFee = undefined,
-      serviceFee = undefined,
-      instruction = undefined,
-      note = undefined,
-    } = req.body || {};
+    const { orderId, userId, mealId, totalItem, cost } = req.body || {};
 
     const user = await UserModel.findById(userId);
     if (!user) {

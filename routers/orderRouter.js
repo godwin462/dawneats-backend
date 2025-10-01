@@ -1,12 +1,17 @@
-const { createOrder, getAllOrders, updateOrder, deleteOrder} = require('../controller/orderController');
+const {
+  createOrder,
+  getAllOrders,
+  updateOrder,
+  deleteOrder,
+} = require("../controller/orderController");
 
-const orderRouter = require('express').Router();
+const orderRouter = require("express").Router();
 
 // const uploads = require('../middleware/maulter');
 
-orderRouter.post('/create', createOrder );
-orderRouter.get('/all', getAllOrders ) 
-orderRouter.put('/update/:id', updateOrder )
-orderRouter.delete('/delete/:id', deleteOrder );
+orderRouter.post("/", createOrder);
+orderRouter.get("/", getAllOrders);
+orderRouter.put("/:id", updateOrder);
+orderRouter.delete("/:id", deleteOrder);
 
-module.exports = orderRouter
+module.exports = orderRouter;

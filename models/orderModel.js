@@ -1,28 +1,24 @@
-const orderSchema = new mongoose.Schema(
+const {Schema, model} = require("mongoose");
+
+const orderSchema = new Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
-    restaurantId: {
+    orderItemId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Restaurant",
-      required: true,
-    },
-    mealId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Meal",
+      ref: "OrderItem",
       required: true,
     },
     addressId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Address",
-      required: true,
     },
-    orderDate: {
-      type: Date,
-      default: Date.now,
+    paymentId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Payment",
     },
     status: {
       type: String,
@@ -35,6 +31,10 @@ const orderSchema = new mongoose.Schema(
       default: 1,
     },
     totalCost: {
+      type: Number,
+      required: true,
+    },
+    subTotalCost: {
       type: Number,
       required: true,
     },
@@ -55,3 +55,6 @@ const orderSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+const OrderModel = model("Order", orderSchema);
+module.exports = OrderModel;
