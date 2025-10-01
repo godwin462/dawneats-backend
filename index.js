@@ -4,6 +4,7 @@ const app = express();
 const cors = require("cors");
 const { default: mongoose } = require("mongoose");
 const userRouter = require("./routers/userRouter");
+const restaurantRouter = require("./routers/restaurantRouter")
 const apiVersion = "/api/v1";
 
 const dbUri = process.env.DB_URI;
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use(`${apiVersion}/users`, userRouter);
+app.use(`${apiVersion}/restaurant`, restaurantRouter);
 
 app.get(`/`, (req, res) => {
   res.send(`Hello World!`);
