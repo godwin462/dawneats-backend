@@ -53,22 +53,22 @@ mongoose
   .connect(dbUri)
   .then(() => {
     console.log("Connected to MongoDB");
-    transporter
-      .verify()
-      .then(() => {
-        console.log("Email server is ready to take our messages");
-        app.listen(port,'0.0.0.0', () => {
-          console.log(
-            `Server is running on http://${host}:${port}${apiVersion}`
-          );
-        });
-      })
-      .catch((error) => {
-        console.log("Error connecting to email server:", error.message);
-      });
-    // app.listen(port, () => {
-    //   console.log(`Server is running on http://${host}:${port}${apiVersion}`);
-    // });
+    // transporter
+    //   .verify()
+    //   .then(() => {
+    //     console.log("Email server is ready to take our messages");
+    //     app.listen(port, () => {
+    //       console.log(
+    //         `Server is running on http://${host}:${port}${apiVersion}`
+    //       );
+    //     });
+    //   })
+    //   .catch((error) => {
+    //     console.log("Error connecting to email server:", error.message);
+    //   });
+    app.listen(port, () => {
+      console.log(`Server is running on http://${host}:${port}${apiVersion}`);
+    });
   })
   .catch((error) => {
     console.error("Error connecting to MongoDB:", error.message);

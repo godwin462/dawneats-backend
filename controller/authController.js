@@ -5,7 +5,8 @@ const { nodemailerOtpHelper } = require("../email/nodemailer");
 const loginOtpTemplate = require("../templates/loginOtpTemplate");
 const jwt = require("jsonwebtoken");
 const OtpModel = require("../models/OtpModel");
-const {sendEmail} = require("../email/mailtrap");
+const {sendEmail} = require("../email/nodemailer");
+
 
 const validateEmail = (email) => {
   const emailRegex =

@@ -1,20 +1,33 @@
-const { MailtrapClient } = require("mailtrap");
+const nodemailer = require("nodemailer");
 
-const mailtrapClient = new MailtrapClient({
-  token: process.env.MAILTRAP_TOKEN,
-});
+exports.sendEmail = async (user) => {
+  try {
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      port: 587,
+      secure: false, // true for 465, false for other ports
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.MAIL_PASS,
+      },
+    });
 
-const sendEmail = async (options) => {
-  await mailtrapClient.send({
-    from: {
-      email: "hello@demomailtrap.co",
-      name: "DawnEats",
-    },
-    to: [{ email: options?.email }],
-    subject: options?.subject,
-    text: options?.message,
-    category: options?.category,
-    html: options?.html,
-  });
+    const info = await transporter.sendMail({
+      from: `DawnEats <${process.env.EMAIL}`,
+      to: user.email,
+      subject: user.subject,
+      html: user.html,
+    });
+
+    console.log(`Message sent : ${info.messageId}`);
+    return info;
+  } catch (error) {
+    console.error(`error sending email: ${error.message}`);
+    throw error;
+  }
 };
-module.exports = { mailtrapClient, sendEmail };
+console.log("User:", process.env.MAILGUN_DOMAIN_NAME);
+console.log(
+  "Pass:",
+  process.env.MAILGUN_SMTP_PASSWORD ? "Loaded ✅" : "Missing ❌"
+);
