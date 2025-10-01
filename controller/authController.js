@@ -5,14 +5,10 @@ const { nodemailerOtpHelper } = require("../email/nodemailer");
 const loginOtpTemplate = require("../templates/loginOtpTemplate");
 const jwt = require("jsonwebtoken");
 const OtpModel = require("../models/OtpModel");
-const {sendEmail} = require("../email/nodemailer");
+const { sendEmail } = require("../email/nodemailer");
+const {validateEmail} = require("../middlewares/validateEmail");
 
 
-const validateEmail = (email) => {
-  const emailRegex =
-    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return emailRegex.test(String(email).toLowerCase());
-};
 const otpLifeTime = process.env.OTP_EXPIRY_DATE;
 
 exports.register = async (req, res) => {
@@ -79,11 +75,11 @@ exports.login = async (req, res) => {
     }
 
     const user = await UserModel.findOne({ email });
+    console.log(email);
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({ message: "User not found, please create an account" });
     }
 
-    // Check if the user is blocked from requesting a new OTP
     let otp = nodemailerOtpHelper.generateOtp(4);
 
     const text = `DawnEats Account verification`;
@@ -121,7 +117,7 @@ exports.verifyAuth = async (req, res) => {
     if (!user) {
       return res
         .status(404)
-        .json({ message: "User not found, please register" });
+        .json({ message: "User not found, please create an account" });
     }
 
     token = jwt.sign({ id: userId }, "permiscus", {

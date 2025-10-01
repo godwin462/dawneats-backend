@@ -1,101 +1,224 @@
-const mealModel = require('../models/mealModel');
-const UserModel = require('../models/userModel');
+const MealModel = require("../models/mealModel");
+const RestaurantModel = require("../models/restaurantModel");
+const {
+  uploadCloudinaryImage,
+  deleteCloudinaryImage,
+} = require("../utils/cloudinary");
+const fs = require("fs");
 
-exports.CreateMeal = async (req,res) => {
-    try {
-       const {id} = req.params;
-       const{name,resturant,description,price,image} = req.body;
+exports.CreateMeal = async (req, res) => {
+  let image = null;
+  try {
+    const { restaurantId = undefined } = req.params || {};
+    const {
+      name = undefined,
+      description = undefined,
+      price = undefined,
+    } = req.body || {};
 
-        const meal = new mealModel({
-            name,
-            resturant,
-            description,
-            price,
-            image
-        });
-        //await meal.save();
-        res.status(201).json({
-            message:'Meal created successfully',
-            meal
-        });
-    } catch (error) {
-        res.status(500).json({
-            message:'Internal Server Error',
-            error:error.message
-        })
+    image = req.file;
+
+    const restaurant = await RestaurantModel.findById(restaurantId);
+
+    if (!restaurant) {
+      if (image && image.path) {
+        fs.unlinkSync(image.path);
+      }
+      return res.status(404).json({
+        message: "Restaurant not found, meal must belong to a restaurant",
+      });
     }
-};
-exports.getAll = async (req,res) => {
-    try {
-      const meal = await mealModel.find();
-      res.status(200).json({
-        message:'All meal below'
-      })  
-    } catch (error) {
-        res.status(500).json({
-            message:'Internal Server Error',
-            error:error.message
-        })
-    }
-}
-exports.getOne = async (req,res) => {
-    try {
-        const id = req.params.id()
-        const meal = await mealModel.findById()
-        if (!meal) {
-        return res.status(404).json({
-                message:'Product not found'
-            })
-            res.status(200).json({
-                message:'Meal Below',
-                error:error.message
-            })
+    let mealImage = null;
+
+    switch (true) {
+      case !name:
+        return res.status(400).json({
+          message: "Please provide a name for the meal",
+        });
+      case !image:
+        return res.status(400).json({
+          message: "Please provide an image for the meal",
+        });
+      case !description:
+        return res.status(400).json({
+          message: "Please provide a description for the meal",
+        });
+      case !price:
+        return res.status(400).json({
+          message: "Please provide a price for the meal",
+        });
+      default:
+        if (image && image.path) {
+          mealImage = await uploadCloudinaryImage(image.path);
+          fs.unlinkSync(image.path);
         }
-    } catch (error) {
-        res.status(500).json({
-            message:'Internal Server Error',
-            error:error.message
-        })
     }
-}
-exports.update= async (req,res) => {
-   try {
-    const {name,resturant,description,price} = req.body;
-    const {id} = req.params
-    const meal = await mealModel.findById(id);
-    if (!meal) {
-    return res.status(404).json({
-        message:'Meal not found',
-        error:error.message
-    })
+
+    if (image && image.path) {
+      mealImage = await uploadCloudinaryImage(image.path);
+      fs.unlinkSync(image.path);
+    }
+    const meal = new MealModel({
+      name,
+      restaurantId,
+      description,
+      price,
+      image: mealImage,
+    });
+    await meal.save();
     res.status(201).json({
-        message:'Meal updated successfully',
-        error:eror.message
-    })
+      message: "Meal created successfully",
+      data: meal,
+    });
+  } catch (error) {
+    if (image && image.path) {
+      fs.unlinkSync(image.path);
     }
-   } catch (error) {
+    console.log(error);
     res.status(500).json({
-        message:'Internal Server Error',
-        error:error.message
-    })
-   }
-}
-exports.delete = async (req,res) => {
-    try {
-        const id = req.params.id
-     const meal = await mealModel.findById(id);
-     if (!meal) {
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+};
+exports.getAll = async (req, res) => {
+  try {
+    const meal = await MealModel.find();
+    res.status(200).json({
+      message: "All meal below",
+      total: meal.length,
+      data: meal,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+};
+exports.getOne = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const meal = await MealModel.findById(id);
+
+    if (!meal) {
+      return res.status(404).json({
+        message: "Meal not found",
+      });
+    }
+    res.status(200).json({
+      message: "Meal found successfully",
+      data: meal,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+};
+exports.update = async (req, res) => {
+  let image = null;
+  try {
+    const { id, restaurantId } = req.params;
+    const {
+      name = undefined,
+      description = undefined,
+      price = undefined,
+    } = req.body || {};
+
+    image = req.file;
+
+    const restaurant = await RestaurantModel.findById(restaurantId);
+
+    if (!restaurant) {
+      if (image && image.path) {
+        fs.unlinkSync(image.path);
+      }
+      return res.status(404).json({
+        message: "Restaurant not found, meal must belong to a restaurant",
+      });
+    }
+
+    let mealImage = null;
+
+    const meal = await MealModel.findById(id);
+    if (!meal) {
+      if (image && image.path) {
+        fs.unlinkSync(image.path);
+      }
       return res.status(404).json({
         message: "meal not found",
       });
-      res.status(200).json({
-        message:'Product deleted successfully'
-     })
     }
-    } catch (error) {
-        res.status(500).json({
-            message:'Internal Server error',
-            error:error.message
-        })
+    if (image && image.path) {
+      mealImage = await uploadCloudinaryImage(image.path);
+      fs.unlinkSync(image.path);
     }
-}
+    Object.assign(meal, { name, image: mealImage, description, price });
+    await meal.save();
+    res.status(200).json({
+      message: "Meal updated successfully",
+    });
+  } catch (error) {
+    if (image && image.path) {
+      fs.unlinkSync(image.path);
+    }
+    console.log(error);
+    res.status(500).json({
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+};
+exports.delete = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const meal = await MealModel.findByIdAndDelete(id, { new: true });
+    if (!meal) {
+      return res.status(404).json({
+        message: "Meal not found",
+      });
+    }
+    if (meal.image && meal.image.public_id) {
+      await deleteCloudinaryImage(meal.image.public_id);
+    }
+    res.status(200).json({
+      message: "Meal deleted successfully",
+      data: meal,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Internal Server error",
+      error: error.message,
+    });
+  }
+};
+
+
+exports.getRestaurantMeals = async (req, res) => {
+  try {
+    const { restaurantId } = req.params;
+    const restaurant = await RestaurantModel.findById(restaurantId);
+    if (!restaurant) {
+      return res.status(404).json({
+        message: "Restaurant not found",
+      });
+    }
+    const meal = await MealModel.findOne({ restaurantId });
+    const total = meal.length;
+    res.status(200).json({
+      message:
+        total > 0 ? "All meal below" : "Restaurant currently have no meal",
+      total,
+      data: meal,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Internal Server error",
+      error: error.message,
+    });
+  }
+};

@@ -29,10 +29,10 @@ const userSchema = new mongoose.Schema(
       required: [true, "User phone number required"],
     },
     profileImage: {
-      imageId: {
+      public_id: {
         type: String,
       },
-      secureUrl: {
+      secure_url: {
         type: String,
       },
     },

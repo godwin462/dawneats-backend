@@ -1,15 +1,13 @@
 const express = require('express');
-const router = express.Router();
+const mealRouter = express.Router();
 const mealController = require('../controller/mealController');
+const {checkLogin} = require("../middlewares/authenticationMiddleware");
 
-router.post('/create', mealController.CreateMeal);
+mealRouter.post('/:resturantId', checkLogin, mealController.CreateMeal);
 
-router.get('/', mealController.getAll);
-
-router.get('/:id', mealController.getOne);
-
-router.put('/:id', mealController.update);
-
-router.delete('/:id', mealController.delete);
-
-module.exports = router;
+mealRouter.get('/', mealController.getAll);
+mealRouter.get('/restaurant-meals/:restaurantId', mealController.getRestaurantMeals);
+mealRouter.get('/:id', mealController.getOne);
+mealRouter.put('/:id', checkLogin, mealController.update);
+mealRouter.delete('/:id', checkLogin, mealController.delete);
+module.exports = mealRouter;

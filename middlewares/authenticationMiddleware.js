@@ -6,30 +6,35 @@ exports.checkLogin = async (req, res, next) => {
     let token = req.headers.authorization;
     if (!token) {
       return res.status(401).json({
-        message: "Authentication required!",
+        message: "Not authenticated, authentication required!",
       });
     }
     token = token.split(" ")[1];
     if (!token) {
       return res.status(401).json({
-        message: "Authentication required!",
+        message: "Not authenticated, authentication required!",
       });
     }
     await jwt.verify(token, "permiscus", async (error, result) => {
       if (error) {
         return res.status(401).json({
-          message: "Session expired",
+          message: "Session expired, please login again",
         });
-      } else {
-        const user = await UserModel.findById(result.id);
-        if (!user) {
-          return res.status(401).json({
-            message: "Session expired",
-          });
-        }
-        // console.log(user);
-        req.user = user._id;
       }
+      if (!result || !result.id) {
+        return res.status(401).json({
+          message: "Session expired, please login again",
+        });
+      }
+      const user = await UserModel.findById(result.id);
+      if (!user) {
+        return res.status(400).json({
+          message: "User not found, please create an account",
+        });
+      }
+      // console.log(user);
+      req.user = user._id;
+
       return next();
     });
     // next();
