@@ -1,11 +1,11 @@
 const UserModel = require("../models/userModel");
 const registrationTeplate = require("../templates/registrationTemplate");
-const { nodemailerOtpHelper } = require("../email/nodemailer");
+const { nodemailerOtpHelper } = require("../email/brevoMail");
 
 const loginOtpTemplate = require("../templates/loginOtpTemplate");
 const jwt = require("jsonwebtoken");
 const OtpModel = require("../models/OtpModel");
-const { sendEmail } = require("../email/nodemailer");
+const { sendEmail } = require("../email/brevoMail");
 const {validateEmail} = require("../middlewares/validateEmail");
 
 
@@ -35,6 +35,8 @@ exports.register = async (req, res) => {
       email,
       phone,
     });
+
+    console.log("I am working!")
 
     let otp = nodemailerOtpHelper.generateOtp(4);
 

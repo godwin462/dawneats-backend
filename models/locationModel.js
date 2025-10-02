@@ -3,17 +3,17 @@ const { Schema, model } = require("mongoose");
 // Define the Location Schema
 const LocationSchema = new Schema(
   {
-    primaryKey: {
+    secondaryKey: {
       type: Schema.Types.ObjectId,
-      required: [true, "Location primary key required!"],
+      required: true,
     },
     longitude: {
       type: Number,
-      required: true,
+      // required: true,
     },
     latitude: {
       type: Number,
-      required: true,
+      // required: true,
     },
     address: {
       type: String,

@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node swagger.js && node index.js",
     "dev": "nodemon index.js",
+    "swagger": "node swagger.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -33,8 +34,14 @@
     "mailtrap": "^4.2.0",
     "moment": "^2.30.1",
     "mongoose": "^8.18.2",
+    "multer": "^2.0.2",
     "nodemailer": "^6.10.1",
     "nodemailer-otp": "^1.0.8",
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "swagger-autogen": "^2.23.7"
   }
 }

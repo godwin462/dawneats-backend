@@ -84,9 +84,12 @@ exports.CreateMeal = async (req, res) => {
 exports.getAll = async (req, res) => {
   try {
     const meal = await MealModel.find();
+
+    const total = meal.length;
     res.status(200).json({
-      message: "All meal below",
-      total: meal.length,
+      message:
+        total > 0 ? "All meal below" : "Restaurants currently have no meal",
+      total,
       data: meal,
     });
   } catch (error) {
@@ -195,7 +198,6 @@ exports.delete = async (req, res) => {
     });
   }
 };
-
 
 exports.getRestaurantMeals = async (req, res) => {
   try {

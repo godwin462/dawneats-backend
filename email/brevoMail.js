@@ -1,11 +1,13 @@
 const axios = require("axios");
+const NodemailerHelper = require("nodemailer-otp");
 
-exports.sendEmail = async (options) => {
+
+const sendEmail = async (options) => {
   try {
     const response = await axios.post(
       "https://api.brevo.com/v3/smtp/email",
       {
-        sender: { email:process.env.EMAIL, name: "DawnEats" },
+        sender: { email:`${process.env.EMAIL}`, name: "DawnEats" },
         to: [{ email: options.email }],
         subject: options.subject,
         htmlContent: options.html,
@@ -18,6 +20,9 @@ exports.sendEmail = async (options) => {
         },
       }
     );
+    if (response.data.error) {
+      throw new Error(response.data.error.message);
+    }
     console.log("Email sent successfully:", response.data);
   } catch (error) {
     console.error(
@@ -27,4 +32,9 @@ exports.sendEmail = async (options) => {
   }
 };
 
-// module.exports = sendEmail;
+const nodemailerOtpHelper = new NodemailerHelper(
+  process.env.EMAIL,
+  process.env.MAIL_PASS
+);
+
+module.exports = { sendEmail, nodemailerOtpHelper };
