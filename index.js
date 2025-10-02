@@ -37,7 +37,7 @@ app.use(cors());
 //   next();
 // });
 app.use(`${apiVersion}/users`, userRouter);
-app.use(`${apiVersion}/restaurant`, restaurantRouter);
+app.use(`${apiVersion}/restaurants`, restaurantRouter);
 
 app.get(`/`, (req, res) => {
   res.send(`Hello World!`);
