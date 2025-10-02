@@ -2,14 +2,9 @@
   "openapi": "3.0.0",
   "info": {
     "title": "DawnEats API",
-    "description": "Description",
+    "description": "DawnEats API Documentation",
     "version": "1.0.0"
   },
-  "servers": [
-    {
-      "url": "http://dawneats-backend.onrender.com//"
-    }
-  ],
   "paths": {
     "/": {
       "get": {
