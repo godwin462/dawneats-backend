@@ -1,13 +1,30 @@
-const express = require('express');
-const mealRouter = express.Router();
-const mealController = require('../controller/mealController');
-const {checkLogin} = require("../middlewares/authenticationMiddleware");
+const mealRouter = require("express").Router();
+const {
+  CreateMeal,
+  getRestaurantMeals,
+  getAllMeals,
+  getOneMeal,
+  deleteMeal,
+  updateMeal,
+} = require("../controller/mealController");
+const { checkLogin } = require("../middlewares/authenticationMiddleware");
+const upload = require("../middlewares/multer");
 
-mealRouter.post('/:resturantId', checkLogin, mealController.CreateMeal);
+mealRouter.post(
+  "/:restaurantId",
+  checkLogin,
+  upload.single("image"),
+  CreateMeal
+);
+mealRouter.get("/", getAllMeals);
+mealRouter.get("/restaurant-meals/:restaurantId", getRestaurantMeals);
+mealRouter.get("/:id", getOneMeal);
+mealRouter.delete("/:id", checkLogin, deleteMeal);
+mealRouter.put(
+  "/:restaurantId/:id",
+  checkLogin,
+  upload.single("image"),
+  updateMeal
+);
 
-mealRouter.get('/', mealController.getAll);
-mealRouter.get('/restaurant-meals/:restaurantId', mealController.getRestaurantMeals);
-mealRouter.get('/:id', mealController.getOne);
-mealRouter.put('/:id', checkLogin, mealController.update);
-mealRouter.delete('/:id', checkLogin, mealController.delete);
 module.exports = mealRouter;
