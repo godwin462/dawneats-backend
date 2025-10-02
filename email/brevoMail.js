@@ -7,7 +7,7 @@ const sendEmail = async (options) => {
     const response = await axios.post(
       "https://api.brevo.com/v3/smtp/email",
       {
-        sender: { email:`<DawnEats ${process.env.EMAIL}>`, name: "DawnEats" },
+        sender: { email:`${process.env.EMAIL}`, name: "DawnEats" },
         to: [{ email: options.email }],
         subject: options.subject,
         htmlContent: options.html,
@@ -20,6 +20,9 @@ const sendEmail = async (options) => {
         },
       }
     );
+    if (response.data.error) {
+      throw new Error(response.data.error.message);
+    }
     console.log("Email sent successfully:", response.data);
   } catch (error) {
     console.error(
