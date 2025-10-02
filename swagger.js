@@ -5,7 +5,7 @@ const doc = {
     title: "DawnEats API",
     description: "Description",
   },
-  host: "localhost:8080",
+  host: "dawneats-backend.onrender.com/",
 };
 
 const outputFile = "./swagger.json";
