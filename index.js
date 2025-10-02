@@ -9,6 +9,7 @@ const mealRouter = require("./routers/mealRouter");
 const orderRouter = require("./routers/orderRouter");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
+const restaurantRouter = require("./routers/restaurantRouter");
 
 const app = express();
 
@@ -36,6 +37,7 @@ app.use(cors());
 //   next();
 // });
 app.use(`${apiVersion}/users`, userRouter);
+app.use(`${apiVersion}/restaurant`, restaurantRouter);
 
 app.get(`/`, (req, res) => {
   res.send(`Hello World!`);
@@ -45,6 +47,7 @@ app.get(`${apiVersion}/`, (req, res) => {
   res.send(`API version ${apiVersion} is running`);
 });
 
+app.use(`${apiVersion}/restaurants`, restaurantRouter);
 app.use(`${apiVersion}/users`, userRouter);
 app.use(`${apiVersion}/auth`, authRouter);
 app.use(`${apiVersion}/meals`, mealRouter);
