@@ -1,17 +1,16 @@
-const orderConfrimationTemplate = () => {
+const purchaseCompleteTemplate = () => {
   return `
-   <!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <title>Order Confirmation</title>
+    <title>Purchase Confirmation</title>
 </head>
 
 <body style="margin:0; padding:0; font-family: Arial, sans-serif; background-color: #f9f9f9;">
     <table align="center" width="100%" cellpadding="0" cellspacing="0"
         style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; padding: 20px;">
-
         <!-- Logo -->
         <tr>
             <td align="center" style="padding-bottom: 20px;">
@@ -23,11 +22,9 @@ const orderConfrimationTemplate = () => {
         <!-- Title -->
         <tr>
             <td align="center" style="color: #222222;">
-                <h2 style="margin: 0; font-size: 22px; font-weight: bold; color: #FF6E00;">
-                    Order Confirmation 🛒
-                </h2>
+                <h2 style="margin: 0; font-size: 22px; font-weight: bold; color: #FF6E00;">Purchase Complete 🎉</h2>
                 <p style="margin: 10px 0 20px; font-size: 14px; color: #555555;">
-                    Thank you for your order! We’re getting it ready to ship.
+                    Thank you for your purchase! Here are the details of your order:
                 </p>
             </td>
         </tr>
@@ -61,8 +58,8 @@ const orderConfrimationTemplate = () => {
         <!-- CTA Button -->
         <tr>
             <td align="center" style="padding: 20px;">
-                <a href="#" style="background-color: #FF6E00; color: #ffffff; text-decoration: none;
-                  padding: 12px 24px; border-radius: 6px; font-size: 14px; font-weight: bold; display: inline-block;">
+                <a href="#"
+                    style="background-color: #FF6E00; color: #ffffff; text-decoration: none; padding: 12px 24px; border-radius: 6px; font-size: 14px; font-weight: bold;">
                     View Your Order
                 </a>
             </td>
@@ -72,8 +69,7 @@ const orderConfrimationTemplate = () => {
         <tr>
             <td align="center" style="padding: 10px 20px; color: #666666; font-size: 13px; line-height: 20px;">
                 <p>If you have any questions, reply to this email or contact our support team.</p>
-                <p style="margin-top: 20px; color:#FF6E00; font-weight: bold;">Thank you for shopping with DawnEats 🧡
-                </p>
+                <p style="margin-top: 20px;">Thank you for shopping with DawnEats 🧡</p>
             </td>
         </tr>
     </table>
@@ -81,7 +77,7 @@ const orderConfrimationTemplate = () => {
 
 </html>
 
-
     `;
 };
-module.exports = orderConfrimationTemplate;
+
+module.exports = purchaseCompleteTemplate;

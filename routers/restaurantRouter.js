@@ -1,11 +1,29 @@
-const {  getOne, getAll, deleteRestaurant, createRestaurant, updateRestaurant } = require("../controller/restaurantController");
+const {
+  createRestaurant,
+  getAllRestaurant,
+  getOneRestaurant,
+  updateRestaurant,
+  deleteRestaurant,
+} = require("../controller/restaurantController");
+const { checkLogin } = require("../middlewares/authenticationMiddleware");
+const upload = require("../middlewares/multer");
 
 const restaurantRouter = require("express").Router();
 
-restaurantRouter.post("/", createRestaurant);
-restaurantRouter.get("/", getAll);
-restaurantRouter.get("/:id", getOne);
-restaurantRouter.put("/:id", updateRestaurant);
-restaurantRouter.delete("/:id", deleteRestaurant);
+restaurantRouter.post(
+  "/",
+  checkLogin,
+  upload.single("image"),
+  createRestaurant
+);
+restaurantRouter.get("/", getAllRestaurant);
+restaurantRouter.get("/:id", getOneRestaurant);
+restaurantRouter.put(
+  "/:id",
+  checkLogin,
+  upload.single("image"),
+  updateRestaurant
+);
+restaurantRouter.delete("/:id", checkLogin, deleteRestaurant);
 
 module.exports = restaurantRouter;
