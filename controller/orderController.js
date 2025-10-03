@@ -60,7 +60,13 @@ exports.createOrder = async (req, res) => {
       });
       create = true;
     } else {
-      Object.assign(orderItem, { orderId: order._id, userId, mealId, totalItem, cost });
+      Object.assign(orderItem, {
+        orderId: order._id,
+        userId,
+        mealId,
+        totalItem,
+        cost,
+      });
       order = await OrderModel.findOneAndUpdate(
         { _id: orderItemId, orderId: order._id },
         { orderItems: order.orderItems.push(orderItem) },
@@ -76,17 +82,6 @@ exports.createOrder = async (req, res) => {
         : "Order updated successfully",
       data: order,
     });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      message: "Internal server error",
-      error: error.message,
-    });
-  }
-};
-
-exports.updateOrder = async (req, res) => {
-  try {
   } catch (error) {
     console.log(error);
     res.status(500).json({
