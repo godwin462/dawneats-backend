@@ -7,8 +7,7 @@ const restaurantSchema = new mongoose.Schema(
       required: true,
     },
     address: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Location",
+      type: String,
       required: true,
     },
     restaurantRating: {

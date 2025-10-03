@@ -51,7 +51,7 @@ app.use(`${apiVersion}/restaurants`, restaurantRouter);
 app.use(`${apiVersion}/users`, userRouter);
 app.use(`${apiVersion}/auth`, authRouter);
 app.use(`${apiVersion}/meals`, mealRouter);
-app.use(`${apiVersion}/orders`, orderRouter);
+app.use(`${apiVersion}/carts`, orderRouter);
 
 mongoose
   .connect(dbUri)
