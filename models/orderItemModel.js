@@ -3,17 +3,17 @@ const { Schema, model } = require("mongoose");
 const orderItemSchema = new Schema(
   {
     orderId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Order",
       required: true,
     },
     userId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
     mealId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Meal",
       required: true,
     },
@@ -25,6 +25,7 @@ const orderItemSchema = new Schema(
     cost: {
       type: Number,
       required: true,
+      default: () => this.mealId.price * this.totalItem,
     },
   },
   { timestamps: true }

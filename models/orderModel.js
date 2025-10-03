@@ -1,23 +1,24 @@
-const {Schema, model} = require("mongoose");
+const { Schema, model } = require("mongoose");
 
 const orderSchema = new Schema(
   {
     userId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
-    orderItemId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "OrderItem",
-      required: true,
-    },
+    orderItems: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "OrderItem",
+      },
+    ],
     addressId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Address",
     },
     paymentId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "Payment",
     },
     status: {
@@ -28,21 +29,25 @@ const orderSchema = new Schema(
     totalItems: {
       type: Number,
       required: true,
-      default: 1,
+      default: () => this.orderItems.length,
     },
     totalCost: {
       type: Number,
       required: true,
+      default: () => this.subTotalCost + this.deliveryFee + this.serviceFee,
     },
     subTotalCost: {
       type: Number,
       required: true,
+      default: () => this.orderItems.reduce((acc, item) => acc + item.cost, 0),
     },
     deliveryFee: {
       type: Number,
+      default: 0,
     },
     serviceFee: {
       type: Number,
+      default: 0,
     },
     instruction: {
       type: String,
